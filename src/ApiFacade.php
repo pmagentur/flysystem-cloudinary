@@ -133,7 +133,8 @@ class ApiFacade extends BaseApi
     {
         $options = [
             'public_id' => $this->converter->pathToId($path),
-            'overwrite' => $overwrite
+            'overwrite' => $overwrite,
+            'resource_type' => 'auto'
         ];
 
         return $this->addPathToResource(Uploader::upload(new DataUri($contents), $options));
