@@ -1,5 +1,5 @@
 {
-  "name": "enl/flysystem-cloudinary",
+  "name": "pmagentur/flysystem-cloudinary",
   "description": "Cloudinary adapter for Flysystem.",
   "license": "MIT",
   "authors": [
