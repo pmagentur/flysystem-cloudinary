@@ -64,7 +64,7 @@ class ApiFacade extends BaseApi
      */
     public function resource($path, $options = [])
     {
-        $resource = parent::resource($this->converter->pathToId($path));
+        $resource = parent::resource($this->converter->pathToId($path), $options);
 
         return $this->addPathToResource($resource);
     }
