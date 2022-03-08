@@ -103,7 +103,7 @@ class ApiFacade extends BaseApi
             $map[$this->converter->pathToId($path)] = $path;
         }
 
-        $response = parent::delete_resources(array_keys($map), array_merge($this->deleteOptions, $options));
+        $response = parent::delete_resources(array_keys($map), array_merge($this->deleteOptions, $options), $options);
 
         $deleted = [];
 
