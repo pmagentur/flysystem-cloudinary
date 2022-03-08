@@ -12,6 +12,29 @@ use League\Flysystem\Filesystem;
 
 class CloudinaryAdapter implements AdapterInterface
 {
+    private const ACCEPTED_VIDEO_FILES_EXTENSIONS = [
+        '3g2' => true,
+        '3gp' => true,
+        'avi' => true,
+        'flv' => true,
+        'm3u8' => true,
+        'ts' => true,
+        'm2ts' => true,
+        'mts' => true,
+        'mov' => true,
+        'mkv' => true,
+        'mp4' => true,
+        'mpeg' => true,
+        'mpd' => true,
+        'mxf' => true,
+        'ogv' => true,
+        'webm' => true,
+        'wmv' => true
+    ];
+    
+    private const VIDEO_RESOURCE_TYPE = 'video';
+    private const IMAGE_RESOURCE_TYPE = 'image';
+    
     /** @var ApiFacade */
     private $api;
 
@@ -253,8 +276,10 @@ class CloudinaryAdapter implements AdapterInterface
      */
     public function getMetadata($path)
     {
+        $options['resource_type'] = $this->getResourceType($path);
+        
         try {
-            return $this->normalizeMetadata($this->api->resource($path));
+            return $this->normalizeMetadata($this->api->resource($path, $options));
         } catch (\Exception $e) {
             return false;
         }
@@ -305,5 +330,22 @@ class CloudinaryAdapter implements AdapterInterface
             'timestamp' => isset($resource['created_at']) ? strtotime($resource['created_at']) : false,
             'version' => isset($resource['version']) ? $resource['version'] : 1,
         ];
+    }
+    
+    /**
+     * Gets the Resource-type based on the file-extension.
+     * 
+     * @param string $path
+     * @return string Resource-type {video | image}
+     */
+    private function getResourceType(string $path): string
+    {
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        
+        if (isset(self::ACCEPTED_VIDEO_FILES_EXTENSIONS[$extension])) {
+            return self::VIDEO_RESOURCE_TYPE;
+        }
+
+        return self::IMAGE_RESOURCE_TYPE;
     }
 }
