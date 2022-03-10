@@ -111,8 +111,10 @@ class CloudinaryAdapter implements AdapterInterface
      */
     public function delete($path)
     {
+        $options['resource_type'] = $this->getResourceType($path);
+        
         try {
-            $response = $this->api->deleteFile($path);
+            $response = $this->api->deleteFile($path, $options);
 
             return $response['result'] === 'ok';
         } catch (\Exception $e) {
